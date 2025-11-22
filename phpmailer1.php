@@ -20,7 +20,7 @@ try {
     $mail->setFrom('gvproject25.26@gmail.com');
     $mail->addAddress($mailtoaddress);
     // Email subject and body
-    $mail->Subject = '"Registration completed"';
+    $mail->Subject = '"OTP Verification"';
     $mail->Body    = $bodyContent;
     // Optional: Add attachments
    // $mail->addAttachment('/path/to/file.pdf');

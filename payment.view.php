@@ -3,15 +3,18 @@ session_start();
 include ("header.php");
 include ("../dboperation.php");
 $obj=new dboperation;
-$id=$_SESSION['farmerid'];  
-$sql="select * from tbl_farmerservice t inner join tbl_farmer i on t.farmerid=i.farmerid inner join 
-       tbl_service s on t.serviceid=s.serviceid where t.farmerid='$id'";
+$id=$_SESSION['userid'];  
+$sql="select * from tbl_payment p inner join tbl_request r on p.requestid=r.requestid 
+      inner join tbl_farmerservice s on s.farmerservice_id=r.farmerservice_id
+      inner join tbl_service q on q.serviceid=s.serviceid 
+      inner join tbl_farmer f on f.farmerid=s.farmerid
+      where p.status='pay' and r.userid='$id'";
 $result=$obj->executequery($sql);
 ?>
 <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                   <h4 class="card-title">Services details</h4><br>
+                   <h4 class="card-title">Payment Details</h4><br>
                   <table class="table table-striped">
  <thead>
                         <tr>
@@ -19,7 +22,7 @@ $result=$obj->executequery($sql);
                             #
                           </th>
                           <th>
-                            Farmer
+                            Farmer Name
                           </th>
                           <th>
                             Service
@@ -27,11 +30,11 @@ $result=$obj->executequery($sql);
                           <th>
                             Field
                           </th>
-                           <th>
-                            Amount
-                          </th>
                           <th>
-                            Action
+                            Date
+                          </th>
+                               <th>
+                           Amount
                           </th>
                         </tr>
                       </thead>
@@ -53,12 +56,11 @@ $result=$obj->executequery($sql);
                         <td>
                         <?php echo $display["Field"];?>
                           </td>
-                          <td>
-                        <?php echo $display["amount"];?>
+                         <td>
+                        <?php echo $display["payment_date"];?>
                           </td>
-                          <td>
-  <a href="services_delete.php?del=<?php echo $display["farmerservice_id"];?>" class="btn btn-primary" onclick="return conform('are you sure you want to delete?')">delete</a>
-  <a href="services_edit.php?edit=<?php echo $display["farmerservice_id"];?>" class="btn btn-primary" onclick="return conform('are you sure you want to Edit?')">Edit</a>
+                           <td>
+                        ₹ 510 rp
                           </td>
                        <?php
                         }

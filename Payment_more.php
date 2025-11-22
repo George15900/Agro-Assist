@@ -4,14 +4,18 @@ include ("header.php");
 include ("../dboperation.php");
 $obj=new dboperation;
 $id=$_SESSION['farmerid'];  
-$sql="select * from tbl_farmerservice t inner join tbl_farmer i on t.farmerid=i.farmerid inner join 
-       tbl_service s on t.serviceid=s.serviceid where t.farmerid='$id'";
+$sql="select * from tbl_payment p inner join tbl_request r on p.requestid=r.requestid 
+      inner join tbl_user u on r.userid=u.userid 
+      inner join tbl_farmerservice s on s.farmerservice_id=r.farmerservice_id
+      inner join tbl_service q on q.serviceid=s.serviceid 
+      where s.farmerid='$id' and p.status='pay'";
 $result=$obj->executequery($sql);
 ?>
+
 <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                   <h4 class="card-title">Services details</h4><br>
+                   <h4 class="card-title">Payment Details</h4><br>
                   <table class="table table-striped">
  <thead>
                         <tr>
@@ -19,7 +23,7 @@ $result=$obj->executequery($sql);
                             #
                           </th>
                           <th>
-                            Farmer
+                            Customer Name
                           </th>
                           <th>
                             Service
@@ -27,11 +31,8 @@ $result=$obj->executequery($sql);
                           <th>
                             Field
                           </th>
-                           <th>
-                            Amount
-                          </th>
                           <th>
-                            Action
+                            View more
                           </th>
                         </tr>
                       </thead>
@@ -54,11 +55,8 @@ $result=$obj->executequery($sql);
                         <?php echo $display["Field"];?>
                           </td>
                           <td>
-                        <?php echo $display["amount"];?>
-                          </td>
-                          <td>
-  <a href="services_delete.php?del=<?php echo $display["farmerservice_id"];?>" class="btn btn-primary" onclick="return conform('are you sure you want to delete?')">delete</a>
-  <a href="services_edit.php?edit=<?php echo $display["farmerservice_id"];?>" class="btn btn-primary" onclick="return conform('are you sure you want to Edit?')">Edit</a>
+                        <a href="payment_details.php?idm=<?php echo $display["payment_id"];?>" 
+                        class="btn btn-primary">View more</a>
                           </td>
                        <?php
                         }

@@ -20,8 +20,9 @@ try {
     $mail->setFrom('gvproject25.26@gmail.com');
     $mail->addAddress($mailtoaddress);
     // Email subject and body
-    $mail->Subject = '"Registration completed"';
+    $mail->Subject = '"Agro Assist"';
     $mail->Body    = $bodyContent;
+     $mail->addAttachment('img/file.pdf');
     // Optional: Add attachments
    // $mail->addAttachment('/path/to/file.pdf');
     // Send the email

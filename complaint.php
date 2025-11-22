@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include("header.php");
@@ -7,7 +6,7 @@ $obj = new dboperation();
 $id = $_SESSION['farmerid'];
 
 $sql = "SELECT * 
-        FROM tbl_feedback i 
+        FROM tbl_complaint i 
         INNER JOIN tbl_request j ON i.requestid = j.requestid 
         INNER JOIN tbl_user u ON j.userid = u.userid 
         INNER JOIN tbl_location l ON u.location_id = l.location_id
@@ -22,7 +21,7 @@ $result = $obj->executequery($sql);
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Feedback Details</h4><br>
+      <h4 class="card-title">Complaint Details</h4><br>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -31,8 +30,8 @@ $result = $obj->executequery($sql);
             <th>Location</th>
             <th>District</th>
             <th>Services</th>
-      
-            <th>Feedback</th>
+          
+            <th>Complaint</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -47,9 +46,10 @@ $result = $obj->executequery($sql);
               <td><?php echo $display["location_name"]; ?></td>
               <td><?php echo $display["district_name"]; ?></td>
               <td><?php echo $display["servicename"]; ?></td>
+            
                <td><?php echo $display["Field"]; ?></td> 
-              <td><?php echo $display["feedback"]; ?></td>
-              <td><?php echo $display["feed_date"]; ?></td>
+              <td><?php echo $display["complaint"]; ?></td>
+              <td><?php echo $display["date2"]; ?></td>
             </tr>
           <?php
           }
@@ -63,3 +63,5 @@ $result = $obj->executequery($sql);
 <?php
 include("footer.php");
 ?>
+
+

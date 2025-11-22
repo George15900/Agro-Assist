@@ -1,59 +1,44 @@
 <?php
+session_start();
 include_once("../dboperation.php");
-$obj= new dboperation();
- 
+$obj = new dboperation();
+if(isset($_POST["submit"]))
+{
+$name = $_POST["Name"];
+$mail = $_POST["mail"];
+$user = $_POST["user"];
+$pass = $_POST["pass"];
+$mob = $_POST["mobile"];
+$dis = $_POST["districtname"]; 
+$loc = $_POST["location"];
+$fno = $_POST["num"];
+$date = date('y-m-d');
+$s="requested";
+$img=$_FILES['idproof']['name'];
+move_uploaded_file($_FILES['idproof']["tmp_name"],"../uploads/".$img);
+$photo=$_FILES['photo']['name'];
+move_uploaded_file($_FILES['photo']["tmp_name"],"../uploads/".$photo);
+$sql="INSERT INTO tbl_farmer (name,email,contact,regdate,district,location_id,idproof,additional_farmers,username,password,value,photo) 
+VALUES('$name','$mail','$mob','$date','$dis','$loc','$img','$fno','$user','$pass','$s','$photo')";
+    $result=$obj->executequery($sql);
 
-if(isset($_POST['Accept']))
-    {
-      $id=$_POST['farmerid'];
-  $sqlquery = "UPDATE tbl_farmer SET value='accepted' WHERE farmerid='$id'";
-         $result = $obj->executequery($sqlquery);
-         echo "<script> alert('verification request accepted Succesfully');window.location='farmer_view_action.php'</script>";
-        if($result==1)
-        {
-        $sql = "SELECT * FROM tbl_farmer WHERE farmerid ='$id'";
-        $res = $obj->executequery($sql);
-            if ($res && mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_assoc($res);
-            $name = $row['name'];
-            $email = $row['email'];
-             $bodyContent = "Dear $name, Your Request is sucessfully verification completed by the Admin. 
-                  You can access the Agro Assist website now .";
-            $mailtoaddress = $email;//mail sent
+   
+if (($result) == 1)
+     {         
+            $bodyContent = "Dear $name, Thank you for your registration in Agro Assist.Registration Successful! Complited
+                                      Waithing for admin approval.";
+            $mailtoaddress = $mail;
             require('phpmailer.php');
-              
-           }
-        }
-        else
-        {
-           echo "<script> alert('verification request accepted Failed')</script>";
-}
+     echo "<script>alert('Registration Successful!'); window.location='wait.php'</script>";
+
 }
 
+  
+ else {
+   
+         // Invalid login, display an error message
+         echo "<script>alert('Try agen'); window.location='sign farmer.php'</script>";
+      }
+   }
 
-if(isset($_POST['reject']))
-    {
-      $id=$_POST['farmerid'];
-  $sqlquery = "UPDATE tbl_farmer SET value='reject' WHERE farmerid='$id'";
-         $result = $obj->executequery($sqlquery);
-         echo "<script> alert('verification request rejected Succesfully');window.location='farmer_view_action.php'</script>";
-        if($result==1)
-        {
-        $sql = "SELECT * FROM tbl_farmer WHERE farmerid ='$id'";
-        $res = $obj->executequery($sql);
-            if ($res && mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_assoc($res);
-            $name = $row['name'];
-            $email = $row['email'];
-             $bodyContent = "Dear $name, Your Request is rejected  by the Admin.Try agian.You can not access the Agro Assist website now .";
-            $mailtoaddress = $email;//mail sent
-            require('phpmailer.php');
-              
-           }
-        }
-        else
-        {
-           echo "<script> alert('verification request rejected Failed')</script>";
-}
-}
 ?>
